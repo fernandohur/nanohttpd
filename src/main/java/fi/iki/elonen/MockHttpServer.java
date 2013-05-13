@@ -7,12 +7,29 @@ import java.util.Queue;
 
 import main.java.fi.iki.elonen.NanoHTTPD.Response.Status;
 
+/**
+ * The MockHttpServer can be used as a mock http server to test webservices
+ * 
+ */
 public class MockHttpServer extends NanoHTTPD {
 
+	/**
+	 * Holds a queue for all the requests
+	 */ 
 	private Queue<Request> requestQueue;
+	/**
+	 * Holds a queue for all the responses that will be sent when a request arrives
+	 */ 
 	private Queue<Response> responseQueue;
+	/**
+	 * The port in which the server will run
+	 */
 	private int port;
 	
+	/**
+	 *  Initializes a new server on the specified port. Note that this method does not start
+	 * the server, you must use <code>start()</code> for this
+	 */ 
 	public MockHttpServer(int port) {
 		super(port);
 
@@ -35,11 +52,17 @@ public class MockHttpServer extends NanoHTTPD {
 		responseQueue.clear();
 	}
 	
+	/**
+	 *  Adds a response to the response queue
+	 */ 
 	public void enqueueResponse(Status status, String mimeType, String txt){
 		Response resp = new Response(status,mimeType,txt);
 		responseQueue.add(resp);
 	}
 	
+	/**
+	 *  returns the last request
+	 */ 
 	public Request getRequest(){
 		return requestQueue.poll();
 	}
@@ -99,6 +122,10 @@ public class MockHttpServer extends NanoHTTPD {
 		
 	}
 
+	/**
+	 *  this method should be overriden to fit your needs. http://0.0.0.0:port is the default url of the
+	 * server
+	 */
 	public String getUrl() {
 		return "http://0.0.0.0:"+port;
 	}
